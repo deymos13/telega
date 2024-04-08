@@ -1,16 +1,34 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import requests
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+API_URL = 'https://api.telegram.org/bot'BOT_TOKEN = '7004016973:AAFuptvSJsZ_NQpoHaQMW64Mnd_L1IzuxhA'
+TEXT1 = 'текст'
+TEXT2 = 'фото'
+TEXT3 = 'видео'
+TEXT4 = 'стикер'
+MAX_COUNTER = 100
+offset = -2
+counter = 0
+chat_id: int
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+while counter < MAX_COUNTER:
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print('attempt =', counter)  #Чтобы видеть в консоли, что код живет
+    updates = requests.get(f'{API_URL}{BOT_TOKEN}/getUpdates?offset={offset + 1}').json()
+
+    if updates['result']:        
+        for result in updates['result']:
+            offset = result['update_id']
+            chat_id = result['message']['from']['id']
+            typemessage = result['message']]
+    if typemessage['text']:
+                requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={TEXT1}')            
+    elif typemessage['photo']:
+                requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={TEXT2}')            
+    elif typemessage['video']:
+                requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={TEXT3}')            
+    elif typemessage['sticker']:
+                requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={TEXT4}')
+    time.sleep(1)
+    counter += 1
